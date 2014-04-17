@@ -7,20 +7,18 @@
 
 #include "math/maths_funcs.h"
 #include "math/maths_funcs.c"
+#include "console.hpp"
+#include "camera.hpp"
 
 int main () {
+  initConsole();
+  
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
     fprintf (stderr, "ERROR: could not start GLFW3\n");
     getch();
     return 1;
   } 
-
-	// uncomment these lines if on Apple OS X
-  /*glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 2);
-  glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
 
   int width = 640, height = 480;
   GLFWwindow* window = glfwCreateWindow (width, height, "Hello Triangle", NULL, NULL);
@@ -92,27 +90,32 @@ int main () {
   glAttachShader (shader_programme, vs);
   glLinkProgram (shader_programme);
   
-  float cam_speed = 1.0f; // 1 unit per second
-  float cam_yaw_speed = 10.0f; // 10 degrees per second
-  float cam_pos[] = {0.0f, 0.0f, 2.0f}; // don't start at zero, or we will be too close
-  float cam_yaw = 0.0f; // y-rotation in degrees
-  
-  mat4 T = translate (identity_mat4 (), vec3 (-cam_pos[0], -cam_pos[1], -cam_pos[2]));
-  mat4 R = rotate_y_deg (identity_mat4 (), -cam_yaw);
-  mat4 view_mat = R * T;
+  float cam_pos[] = {0.0f, 0.0f, 2.0f};
+  Camera *camera = new Camera(1.0f, 10.0f, cam_pos, 0.0f);
+//  float cam_speed = 1.0f; // 1 unit per second
+//  float cam_yaw_speed = 10.0f; // 10 degrees per second
+//  float cam_pos[] = {0.0f, 0.0f, 2.0f}; // don't start at zero, or we will be too close
+//  float cam_yaw = 0.0f; // y-rotation in degrees
+
+printf("\nspeed = %f", camera->speed);
+ printf("\nyawSpeed = %f", camera->yawSpeed);
+ printf("\nposition = %f %f %f", camera->position[0], camera->position[1], camera->position[2]);
+ printf("\nyaw = %f", camera->yaw);
+
+  mat4 view_mat = camera->viewMatrix();
   
   #define ONE_DEG_IN_RAD (2.0 * M_PI) / 360.0 // 0.017444444
-  // input variables
-  float near = 0.1f; // clipping plane
-  float far = 100.0f; // clipping plane
+  // input variables    
+  float _near = 0.1f; // clipping plane
+  float _far = 100.0f; // clipping plane
   float fov = 67.0f * ONE_DEG_IN_RAD; // convert 67 degrees to radians
   float aspect = (float)width / (float)height; // aspect ratio
   // matrix components
-  float range = tan (fov * 0.5f) * near;
-  float Sx = (2.0f * near) / (range * aspect + range * aspect);
-  float Sy = near / range;
-  float Sz = -(far + near) / (far - near);
-  float Pz = -(2.0f * far * near) / (far - near);  
+  float range = tan (fov * 0.5f) * _near;
+  float Sx = (2.0f * _near) / (range * aspect + range * aspect);
+  float Sy = _near / range;
+  float Sz = -(_far + _near) / (_far - _near);
+  float Pz = -(2.0f * _far * _near) / (_far - _near);  
   
   float proj_mat[] = {
   Sx, 0.0f, 0.0f, 0.0f,
@@ -151,46 +154,44 @@ while (!glfwWindowShouldClose (window)) {
   // control keys
 bool cam_moved = false;
 if (glfwGetKey (window, GLFW_KEY_A)) {
-  cam_pos[0] -= cam_speed * elapsed_seconds;
+  camera->moveLeft(elapsed_seconds);
   cam_moved = true;
 }
 if (glfwGetKey (window, GLFW_KEY_D)) {
-  cam_pos[0] += cam_speed * elapsed_seconds;
+  camera->moveRight(elapsed_seconds);
   cam_moved = true;
 }
 if (glfwGetKey (window, GLFW_KEY_PAGE_UP)) {
-  cam_pos[1] += cam_speed * elapsed_seconds;
+  camera->moveUp(elapsed_seconds);
   cam_moved = true;
 }
 if (glfwGetKey (window, GLFW_KEY_PAGE_DOWN)) {
-  cam_pos[1] -= cam_speed * elapsed_seconds;
+  camera->moveDown(elapsed_seconds);
   cam_moved = true;
 }
 if (glfwGetKey (window, GLFW_KEY_W)) {
-  cam_pos[2] -= cam_speed * elapsed_seconds;
+  camera->moveForward(elapsed_seconds);
   cam_moved = true;
 }
 if (glfwGetKey (window, GLFW_KEY_S)) {
-  cam_pos[2] += cam_speed * elapsed_seconds;
+  camera->moveBack(elapsed_seconds);
   cam_moved = true;
 }
-if (glfwGetKey (window, GLFW_KEY_LEFT)) {
-  cam_yaw += cam_yaw_speed * elapsed_seconds;
+if (glfwGetKey (window, GLFW_KEY_Q)) {
+  camera->lookLeft(elapsed_seconds);
   cam_moved = true;
 }
-if (glfwGetKey (window, GLFW_KEY_RIGHT)) {
-  cam_yaw -= cam_yaw_speed * elapsed_seconds;
+if (glfwGetKey (window, GLFW_KEY_E)) {
+  camera->lookRight(elapsed_seconds);
   cam_moved = true;
 }
 // update view matrix
 if (cam_moved) {
-  mat4 T = translate (identity_mat4 (), vec3 (-cam_pos[0], -cam_pos[1], -cam_pos[2])); // cam translation
-  mat4 R = rotate_y_deg (identity_mat4 (), -cam_yaw); // 
-  mat4 view_mat = R * T;
-  glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, view_mat.m);
+  glUniformMatrix4fv (view_mat_location, 1, GL_FALSE, camera->viewMatrix().m);
 }
 }
   // close GL context and any other GLFW resources
   glfwTerminate();
+  delete camera;
   return 0;
 }

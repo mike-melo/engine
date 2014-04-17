@@ -577,13 +577,13 @@ mat4 look_at (const vec3& cam_pos, vec3 targ_pos, const vec3& up) {
 }
 
 // returns a perspective function mimicking the opengl projection style.
-mat4 perspective (float fovy, float aspect, float near, float far) {
+mat4 perspective (float fovy, float aspect, float _near, float _far) {
 	float fov_rad = fovy * ONE_DEG_IN_RAD;
-	float range = tan (fov_rad / 2.0f) * near;
-	float sx = (2.0f * near) / (range * aspect + range * aspect);
-	float sy = near / range;
-	float sz = -(far + near) / (far - near);
-	float pz = -(2.0f * far * near) / (far - near);
+	float range = tan (fov_rad / 2.0f) * _near;
+	float sx = (2.0f * _near) / (range * aspect + range * aspect);
+	float sy = _near / range;
+	float sz = -(_far + _near) / (_far - _near);
+	float pz = -(2.0f * _far * _near) / (_far - _near);
 	mat4 m = zero_mat4 (); // make sure bottom-right corner is zero
 	m.m[0] = sx;
 	m.m[5] = sy;
