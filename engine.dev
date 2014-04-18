@@ -1,7 +1,7 @@
 [Project]
 FileName=engine.dev
 Name=engine
-UnitCount=7
+UnitCount=9
 Type=0
 Ver=1
 ObjFiles=
@@ -109,6 +109,26 @@ BuildCmd=
 
 [Unit7]
 FileName=scene.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit8]
+FileName=model.hpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=model.cpp
 CompileCpp=1
 Folder=
 Compile=1

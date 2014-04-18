@@ -10,10 +10,14 @@
 #include "console.hpp"
 #include "camera.hpp"
 #include "scene.hpp"
+#include "model.hpp"
 
 int main () {
     
   initConsole();
+  
+  Model *model = Model::loadObjFile("sphere.obj");
+  model->toString();
   
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
