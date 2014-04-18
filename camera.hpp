@@ -1,19 +1,29 @@
 #ifndef __camera_hpp_
 #define __camera_hpp_
 
+#include "scene.hpp"
 #include "math/maths_funcs.h"
 
 class Camera {
-            
-  public:
-  
+      
   float speed;
   float yawSpeed;
   float *position;
   float yaw;
+  bool moved;
+  
+  int view_mat_location;
+  unsigned int shader_programme;
+  
+  mat4 viewMatrix(); 
+            
+  public:
   
   Camera(float speed, float yawSpeed, float *position, float yaw);
-  mat4 viewMatrix(); 
+  
+  void roll(int width, int height);
+  void action(Scene *scene);
+  void nextFrame();
   
   void moveLeft(double time);
   void moveRight(double time);
