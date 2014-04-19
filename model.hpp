@@ -6,19 +6,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define INITIAL_NUM_OF_VERTICES  10
+#define INITIAL_NUM_OF_VERTICES 10
 
 class Model {
-      vec4 **vertices;
+      vec4 *vertices;
       size_t numberOfVertices;
-
-      Model();
             
       public:
-     
+      Model();
+      
       static Model *loadObjFile(const char *objFileName);
-
+      float *getVertices();
       void toString();
+      size_t getNumberOfVertices();
       
       virtual ~Model();    
 };

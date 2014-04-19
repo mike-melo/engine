@@ -17,7 +17,6 @@ int main () {
   initConsole();
   
   Model *model = Model::loadObjFile("sphere.obj");
-  model->toString();
   
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
@@ -62,6 +61,7 @@ int main () {
   };
   
   Scene *scene = new Scene(points, 9);
+  scene->add(*model);
   scene->prepare();
   camera->roll(width, height);  
   

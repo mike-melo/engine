@@ -81,7 +81,7 @@ void Camera::action(Scene *scene) {
   moved = false;
   glUseProgram (shader_programme);
   scene->render();
-  glDrawArrays (GL_TRIANGLES, 0, 3);     
+  glDrawArrays (GL_TRIANGLES, 0, 1926);     
 }
 
 mat4 Camera::viewMatrix() {
