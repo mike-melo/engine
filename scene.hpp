@@ -17,17 +17,17 @@ class Scene {
   Model *models;
   size_t numberOfModels;
                
-  size_t numberOfPoints;
+  unsigned int numberOfPoints;
   unsigned int vao;
   
-  void prepareModel(Model model);
+  void prepareModel(Model &model);
      
   public:
   
-  Scene(float points[], size_t numberOfPoints);
+  Scene();
   virtual ~Scene();
   
-  void add(Model model);
+  void add(Model &model);
   void prepare();
   void render();
   

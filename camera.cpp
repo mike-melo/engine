@@ -7,12 +7,12 @@
 #include <stdio.h>
 #include <math.h>
 
-Camera::Camera(float _speed, float _yawSpeed, float _position[3], float _yaw) {
- speed = _speed;
- yawSpeed = _yawSpeed;
- position = _position;
- yaw = _yaw;
- moved = false;
+Camera::Camera(float speed, float yawSpeed, float position[3], float yaw) {
+ this->speed = speed;
+ this->yawSpeed = yawSpeed;
+ this->position = position;
+ this->yaw = yaw;
+ this->moved = false;
 }
 
 void Camera::nextFrame() {
@@ -80,8 +80,7 @@ void Camera::roll(int width, int height) {
 void Camera::action(Scene *scene) {
   moved = false;
   glUseProgram (shader_programme);
-  scene->render();
-  glDrawArrays (GL_TRIANGLES, 0, 1926);     
+  scene->render();  
 }
 
 mat4 Camera::viewMatrix() {

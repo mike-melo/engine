@@ -53,14 +53,14 @@ int main () {
 
   float cam_pos[] = {0.0f, 0.0f, 2.0f};
   Camera *camera = new Camera(1.0f, 10.0f, cam_pos, 0.0f);
-
+  glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   float points[] = {
    0.0f,  0.5f,  0.0f,
    0.5f, -0.5f,  0.0f,
   -0.5f, -0.5f,  0.0f
   };
   
-  Scene *scene = new Scene(points, 9);
+  Scene *scene = new Scene();
   scene->add(*model);
   scene->prepare();
   camera->roll(width, height);  
@@ -125,8 +125,8 @@ int main () {
   // close GL context and any other GLFW resources
   glfwTerminate();
   
-  delete camera;
-  delete scene;
+  //delete camera;
+  //delete scene;
   
   return 0;
 }

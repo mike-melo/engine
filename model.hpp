@@ -10,15 +10,19 @@
 
 class Model {
       vec4 *vertices;
+      unsigned int *faces;
       size_t numberOfVertices;
+      unsigned int numberOfPoints;
+     
             
       public:
       Model();
-      
+       unsigned int numberOfFaces;
       static Model *loadObjFile(const char *objFileName);
-      float *getVertices();
+      float *getPoints();
       void toString();
       size_t getNumberOfVertices();
+      unsigned int getNumberOfPoints();
       
       virtual ~Model();    
 };
