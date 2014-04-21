@@ -7,13 +7,6 @@ Model::Model() {
   this->numberOfPoints = 0;
 }
 
-void Model::toString() {
-  unsigned int i=0;
-  for(i=0; i<numberOfVertices; i++) {
-   printf("x=%lf y=%lf z=%lf, w=%lf\n", vertices[i].v[0], vertices[i].v[1], vertices[i].v[2], vertices[i].v[3]);
-  }
-}
-
 Model* Model::loadObjFile(const char *objFileName) {
  FILE *stream;
  char line[256];
@@ -27,9 +20,8 @@ Model* Model::loadObjFile(const char *objFileName) {
   return NULL;
  }
  
- model->numberOfPoints = 0;
- model->numberOfFaces = 0;
- model->faces = (unsigned int *)malloc(sizeof(unsigned int) * 3);
+ model->vertexOrderIndex = 0;
+ model->vertexOrder = (unsigned int *)malloc(sizeof(unsigned int) * 3);
  model->vertices = (vec4 *)malloc(sizeof(vec4) * newSize);
  
  do {
@@ -39,64 +31,39 @@ Model* Model::loadObjFile(const char *objFileName) {
    vertex->v[3] = 1;
    model->vertices[model->numberOfVertices] = *vertex;
    model->numberOfVertices++;
-   model->numberOfPoints += 3;
-   //printf("line %s\n", line);
-   //printf("Vertex %f %f %f\n", vertex->v[0], vertex->v[1], vertex->v[2]);
-   //printf("\nRead number of points %d", model->numberOfPoints);
    if(model->numberOfVertices == newSize) {
     newSize += INITIAL_NUM_OF_VERTICES;
     model->vertices = (vec4 *)realloc(model->vertices, sizeof(vec4) * newSize);
-    //printf("\nResizing to %d", newSize);
    }           
-
   }  
   if(line[0] == 'f' && line[1] == ' ') {
-     sscanf(line, "f %d//%*d %d//%*d %d//%*d", &model->faces[model->numberOfFaces], &model->faces[model->numberOfFaces + 1], &model->faces[model->numberOfFaces + 2]);
-     model->numberOfFaces += 3;
-     model->faces = (unsigned int *)realloc(model->faces, sizeof(unsigned int) * (model->numberOfFaces + 3));
-     //printf("Face %d %d %d\n",  model->faces[model->numberOfFaces - 3], model->faces[model->numberOfFaces - 2], model->faces[model->numberOfFaces - 1]);
+   //Have to check when there's only %d//%d"
+   sscanf(line, "f %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d", &model->vertexOrder[model->vertexOrderIndex], &model->vertexOrder[model->vertexOrderIndex + 1], &model->vertexOrder[model->vertexOrderIndex + 2]);
+   model->vertexOrderIndex += 3;
+   model->vertexOrder = (unsigned int *)realloc(model->vertexOrder, sizeof(unsigned int) * (model->vertexOrderIndex + 3));
   } 
  } while(fgets(line, 256, stream) != NULL);
 
- model->numberOfFaces += v;
- 
- fclose(stream);
- //fprintf(stderr, "\nRead number of points %d", model->numberOfPoints);
- return model;
-}
+ model->numberOfPoints = model->vertexOrderIndex * 3;
 
-size_t Model::getNumberOfVertices() {
-  return numberOfVertices;      
+ fclose(stream);
+ return model;
 }
 
 unsigned int Model::getNumberOfPoints() {
   return numberOfPoints;
 }
 
-
 float *Model::getPoints() {
-  float *points = new float[numberOfFaces * 3];
+  float *points = new float[numberOfPoints];
   unsigned int i = 0, j = 0;
-  //printf("\nNumber of faces = %d", numberOfFaces);
- //printf("\nNumber of vertices = %d", numberOfVertices);
- //system("pause");
-  for(i=0; i<numberOfFaces; i++) {
-   //printf("\nVertex %f %f %f", vertices[faces[i] - 1].v[0], vertices[faces[i] - 1].v[1], vertices[faces[i] - 1].v[2]);
-//     //printf("\nfaces[i] = %d", faces[i]);
-     points[j++] = vertices[faces[i] - 1].v[0];
-     points[j++] = vertices[faces[i] - 1].v[1];
-     points[j++] = vertices[faces[i] - 1].v[2];      
- }
-  //for(i=0; i<numberOfVertices; i++) {
-//           printf("\nVertex %f %f %f", vertices[i].v[0], vertices[i].v[1], vertices[i].v[2]);
-//   points[j] = vertices[i].v[0];
-//   j++;
-//   points[j] = vertices[i].v[1];
-//   j++;
-//    points[j] = vertices[i].v[2];
-//    j++;
-//  }
- // printf("\nGot %d points", j + 1);
+  for(i=0; i<vertexOrderIndex; i++) {
+    unsigned int vertexIndex = vertexOrder[i] - 1;
+   
+    points[j++] = vertices[vertexIndex].v[0];    
+    points[j++] = vertices[vertexIndex].v[1];    
+    points[j++] = vertices[vertexIndex].v[2];   
+  }
   return points;
 }
 

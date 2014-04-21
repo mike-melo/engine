@@ -29,15 +29,13 @@ void Scene::prepareModel(Model &model) {
   unsigned int vbo = 0;
   glGenBuffers (1, &vbo);
   glBindBuffer (GL_ARRAY_BUFFER, vbo);
-  glBufferData (GL_ARRAY_BUFFER, model.numberOfFaces * 3 * sizeof (float), model.getPoints(), GL_STATIC_DRAW);
-  numberOfPoints += model.numberOfFaces * 3;
-  printf("\nnumberOfPoints %d", numberOfPoints);
+  glBufferData (GL_ARRAY_BUFFER, model.getNumberOfPoints() * sizeof (float), model.getPoints(), GL_STATIC_DRAW);
+  this->numberOfPoints += model.getNumberOfPoints();
   glGenVertexArrays (1, &vao);
   glBindVertexArray (vao);
   glEnableVertexAttribArray (0);
   glBindBuffer (GL_ARRAY_BUFFER, vbo);
   glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-  //free(model.getPoints());
 }
 
 void Scene::prepare() {
@@ -45,7 +43,7 @@ void Scene::prepare() {
 //  for(i=0; i<numberOfModels; i++) {
 //    //prepareModel(models[i]);        
 //  }
-prepareModel(model);
+  prepareModel(model);
 }
 
 void Scene::render() {

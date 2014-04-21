@@ -10,21 +10,18 @@
 
 class Model {
       vec4 *vertices;
-      unsigned int *faces;
+      unsigned int *vertexOrder;
       size_t numberOfVertices;
-      unsigned int numberOfPoints;
-     
-            
+      unsigned int numberOfPoints;  
+      unsigned int vertexOrderIndex;     
+      
       public:
       Model();
-       unsigned int numberOfFaces;
+      virtual ~Model(); 
+        
       static Model *loadObjFile(const char *objFileName);
       float *getPoints();
-      void toString();
-      size_t getNumberOfVertices();
-      unsigned int getNumberOfPoints();
-      
-      virtual ~Model();    
+      unsigned int getNumberOfPoints();  
 };
 
 #endif

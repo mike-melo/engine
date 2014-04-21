@@ -90,41 +90,41 @@ mat4 Camera::viewMatrix() {
 }
 
 void Camera::moveLeft(double time) {
- position[0] -= speed * time;
- moved = true;
+ this->position[0] -= this->speed * time;
+ this->moved = true;
 }
 
 void Camera::moveRight(double time) {
- position[0] += speed * time;
- moved = true;
+ this->position[0] += this->speed * time;
+ this->moved = true;
 }
 
 void Camera::moveBack(double time) {
- position[2] += speed * time;
- moved = true;
+ this->position[2] += this->speed * time;
+ this->moved = true;
 }
 
 void Camera::moveForward(double time) {
- position[2] -= speed * time;
- moved = true;
+ this->position[2] -= this->speed * time;
+ this->moved = true;
 }
 
 void Camera::moveUp(double time) {
- position[1] += speed * time;
- moved = true;
+ this->position[1] += this->speed * time;
+ this->moved = true;
 }
 
 void Camera::moveDown(double time) {
- position[1] -= speed * time;
- moved = true;
+ this->position[1] -= this->speed * time;
+ this->moved = true;
 }
 
 void Camera::lookLeft(double time) {
- yaw += yawSpeed * time;
- moved = true;
+ this->yaw += this->yawSpeed * time;
+ this->moved = true;
 }
 
 void Camera::lookRight(double time) {
- yaw -= yawSpeed * time;
- moved = true;
+ this->yaw -= this->yawSpeed * time;
+ this->moved = true;
 }

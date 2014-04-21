@@ -16,7 +16,7 @@ int main () {
     
   initConsole();
   
-  Model *model = Model::loadObjFile("sphere.obj");
+  Model *model = Model::loadObjFile("man.obj");
   
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
