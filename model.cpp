@@ -12,6 +12,8 @@ Model* Model::loadObjFile(const char *objFileName) {
  char line[256];
  vec4 *vertex;
  Model *model = new Model();
+ printf("\nNew model is 0x%x", model);
+ 
  unsigned int newSize = INITIAL_NUM_OF_VERTICES;
  unsigned int v = 0;
  stream = fopen(objFileName, "r");
@@ -19,7 +21,7 @@ Model* Model::loadObjFile(const char *objFileName) {
  if(stream == NULL) {
   return NULL;
  }
- 
+ printf("\nread stream");
  model->vertexOrderIndex = 0;
  model->vertexOrder = (unsigned int *)malloc(sizeof(unsigned int) * 3);
  model->vertices = (vec4 *)malloc(sizeof(vec4) * newSize);
@@ -28,6 +30,8 @@ Model* Model::loadObjFile(const char *objFileName) {
   if(line[0] == 'v' && line[1] == ' ') {
    vertex = (vec4 *)calloc(1, sizeof(vec4));
    sscanf(line, "v %f %f %f", &vertex->v[0], &vertex->v[1], &vertex->v[2]);
+  // printf("\nhere = %s", objFileName);
+   //printf("\nline = %s", line);
    vertex->v[3] = 1;
    model->vertices[model->numberOfVertices] = *vertex;
    model->numberOfVertices++;
@@ -39,8 +43,12 @@ Model* Model::loadObjFile(const char *objFileName) {
   if(line[0] == 'f' && line[1] == ' ') {
    //Have to check when there's only %d//%d"
    sscanf(line, "f %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d", &model->vertexOrder[model->vertexOrderIndex], &model->vertexOrder[model->vertexOrderIndex + 1], &model->vertexOrder[model->vertexOrderIndex + 2]);
+ 
+ //printf("\nhere face = %s", objFileName);
+  // printf("\nline = %s", line);
    model->vertexOrderIndex += 3;
    model->vertexOrder = (unsigned int *)realloc(model->vertexOrder, sizeof(unsigned int) * (model->vertexOrderIndex + 3));
+ 
   } 
  } while(fgets(line, 256, stream) != NULL);
 

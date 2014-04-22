@@ -10,24 +10,24 @@ class Scene {
   
   private:
   
-  unsigned int *vaos;
-  
-  Model model;
-  
-  Model *models;
-  size_t numberOfModels;
-               
-  unsigned int numberOfPoints;
+  Model models[10];
+  unsigned int vaos[10];
   unsigned int vao;
   
-  void prepareModel(Model &model);
+  Model *model;
+  
+  //Model models[10];
+  unsigned int numberOfModels;
+  unsigned int numberOfPoints;
+  
+  void prepareModel(Model *model);
      
   public:
   
   Scene();
   virtual ~Scene();
   
-  void add(Model &model);
+  void add(Model *model);
   void prepare();
   void render();
   

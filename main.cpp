@@ -17,7 +17,9 @@ int main () {
   initConsole();
   
   Model *model = Model::loadObjFile("man.obj");
+  //Model *model2 = Model::loadObjFile("man.obj");
   
+  printf("\nLoaded model");
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
     fprintf (stderr, "ERROR: could not start GLFW3\n");
@@ -61,7 +63,7 @@ int main () {
   };
   
   Scene *scene = new Scene();
-  scene->add(*model);
+  scene->add(model);
   scene->prepare();
   camera->roll(width, height);  
   
