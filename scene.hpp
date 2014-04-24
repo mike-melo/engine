@@ -5,22 +5,20 @@
 #include <stdlib.h>
 
 #include "model.hpp"
+#include <vector>
+
+using namespace std;
 
 class Scene {
   
   private:
   
-  Model models[10];
-  unsigned int vaos[10];
-  unsigned int vao;
+  vector<Model> models;
+  vector<int> vaos;
+    
+  //unsigned int numberOfPoints;
   
-  Model *model;
-  
-  //Model models[10];
-  unsigned int numberOfModels;
-  unsigned int numberOfPoints;
-  
-  void prepareModel(Model *model);
+  void prepareModel(Model &model);
      
   public:
   

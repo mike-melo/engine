@@ -5,15 +5,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
+
+using namespace std;
 
 #define INITIAL_NUM_OF_VERTICES 10
 
 class Model {
-      vec4 *vertices;
-      unsigned int *vertexOrder;
-      size_t numberOfVertices;
-      unsigned int numberOfPoints;  
-      unsigned int vertexOrderIndex;     
+      vector<vec4*> vertices;
+      vector<int> vertexOrder;
+      
+      unsigned int numberOfPoints;       
       
       public:
       Model();

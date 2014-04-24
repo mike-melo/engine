@@ -16,8 +16,8 @@ int main () {
     
   initConsole();
   
-  Model *model = Model::loadObjFile("man.obj");
-  //Model *model2 = Model::loadObjFile("man.obj");
+  Model *model = Model::loadObjFile("ostrich.obj");
+  Model *model2 = Model::loadObjFile("man.obj");
   
   printf("\nLoaded model");
   // start GL context and O/S window using the GLFW helper library
@@ -64,6 +64,7 @@ int main () {
   
   Scene *scene = new Scene();
   scene->add(model);
+  scene->add(model2);
   scene->prepare();
   camera->roll(width, height);  
   
