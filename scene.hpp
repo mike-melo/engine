@@ -15,17 +15,12 @@ class Scene {
   
   vector<Model> models;
   vector<int> vaos;
-    
-  //unsigned int numberOfPoints;
   
   void prepareModel(Model &model);
      
   public:
   
-  Scene();
-  virtual ~Scene();
-  
-  void add(Model *model);
+  void add(Model &model);
   void prepare();
   void render();
   

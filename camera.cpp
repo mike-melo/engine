@@ -22,7 +22,7 @@ void Camera::nextFrame() {
 }
 
 void Camera::roll(int width, int height) {
-     #define ONE_DEG_IN_RAD (2.0 * M_PI) / 360.0 // 0.017444444
+  #define ONE_DEG_IN_RAD (2.0 * M_PI) / 360.0 // 0.017444444
   // input variables    
   float _near = 0.1f; // clipping plane
   float _far = 100.0f; // clipping plane
@@ -77,10 +77,10 @@ void Camera::roll(int width, int height) {
   glUniformMatrix4fv (proj_mat_location, 1, GL_FALSE, proj_mat);
 }
 
-void Camera::action(Scene *scene) {
+void Camera::action(Scene &scene) {
   moved = false;
   glUseProgram (shader_programme);
-  scene->render();  
+  scene.render();  
 }
 
 mat4 Camera::viewMatrix() {

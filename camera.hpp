@@ -22,7 +22,7 @@ class Camera {
   Camera(float speed, float yawSpeed, float *position, float yaw);
   
   void roll(int width, int height);
-  void action(Scene *scene);
+  void action(Scene &scene);
   void nextFrame();
   
   void moveLeft(double time);

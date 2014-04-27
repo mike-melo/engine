@@ -16,10 +16,9 @@ int main () {
     
   initConsole();
   
-  Model *model = Model::loadObjFile("ostrich.obj");
-  Model *model2 = Model::loadObjFile("man.obj");
+  Model model = Model("ostrich.obj");
+  Model model2 = Model("man.obj");
   
-  printf("\nLoaded model");
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
     fprintf (stderr, "ERROR: could not start GLFW3\n");
@@ -28,7 +27,7 @@ int main () {
   } 
 
   int width = 640, height = 480;
-  GLFWwindow* window = glfwCreateWindow (width, height, "Hello Triangle", NULL, NULL);
+  GLFWwindow* window = glfwCreateWindow (width, height, "Engine", NULL, NULL);
   if (!window) {
     fprintf (stderr, "ERROR: could not open window with GLFW3\n");
     getch();
@@ -54,7 +53,7 @@ int main () {
   glDepthFunc (GL_LESS); // depth-testing interprets a smaller value as "closer"
 
   float cam_pos[] = {0.0f, 0.0f, 2.0f};
-  Camera *camera = new Camera(1.0f, 10.0f, cam_pos, 0.0f);
+  Camera camera = Camera(1.0f, 10.0f, cam_pos, 0.0f);
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   float points[] = {
    0.0f,  0.5f,  0.0f,
@@ -62,11 +61,11 @@ int main () {
   -0.5f, -0.5f,  0.0f
   };
   
-  Scene *scene = new Scene();
-  scene->add(model);
-  scene->add(model2);
-  scene->prepare();
-  camera->roll(width, height);  
+  Scene scene = Scene();
+  scene.add(model);
+  scene.add(model2);
+  scene.prepare();
+  camera.roll(width, height);  
   
   float speed = 3.0f; // move at 1 unit per second
   float last_position = 0.0f;
@@ -84,52 +83,49 @@ int main () {
 
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-    camera->action(scene);
+    camera.action(scene);
     
     glfwPollEvents ();
     glfwSwapBuffers (window);
   
     if (glfwGetKey (window, GLFW_KEY_A)) {
-      camera->moveLeft(elapsed_seconds);
+      camera.moveLeft(elapsed_seconds);
     }
   
     if (glfwGetKey (window, GLFW_KEY_D)) {
-      camera->moveRight(elapsed_seconds);
+      camera.moveRight(elapsed_seconds);
     }
   
     if (glfwGetKey (window, GLFW_KEY_PAGE_UP)) {
-      camera->moveUp(elapsed_seconds);
+      camera.moveUp(elapsed_seconds);
     }
 
     if (glfwGetKey (window, GLFW_KEY_PAGE_DOWN)) {
-      camera->moveDown(elapsed_seconds);
+      camera.moveDown(elapsed_seconds);
     }
 
     if (glfwGetKey (window, GLFW_KEY_W)) {
-      camera->moveForward(elapsed_seconds);
+      camera.moveForward(elapsed_seconds);
     }
 
     if (glfwGetKey (window, GLFW_KEY_S)) {
-      camera->moveBack(elapsed_seconds);
+      camera.moveBack(elapsed_seconds);
     }
 
     if (glfwGetKey (window, GLFW_KEY_Q)) {
-      camera->lookLeft(elapsed_seconds);
+      camera.lookLeft(elapsed_seconds);
     }
   
     if (glfwGetKey (window, GLFW_KEY_E)) {
-      camera->lookRight(elapsed_seconds);
+      camera.lookRight(elapsed_seconds);
     }
 
-    camera->nextFrame();
+    camera.nextFrame();
 
   }
   
   // close GL context and any other GLFW resources
   glfwTerminate();
-  
-  //delete camera;
-  //delete scene;
   
   return 0;
 }

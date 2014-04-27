@@ -12,16 +12,17 @@ using namespace std;
 #define INITIAL_NUM_OF_VERTICES 10
 
 class Model {
-      vector<vec4*> vertices;
+      vector<vec4> vertices;
       vector<int> vertexOrder;
       
       unsigned int numberOfPoints;       
       
+      void loadObjFile(const char *objFileName);
+      
       public:
-      Model();
+      Model(const char *fileName);
       virtual ~Model(); 
         
-      static Model *loadObjFile(const char *objFileName);
       float *getPoints();
       unsigned int getNumberOfPoints();  
 };
