@@ -9,22 +9,22 @@
 
 using namespace std;
 
-#define INITIAL_NUM_OF_VERTICES 10
-
 class Model {
       vector<vec4> vertices;
       vector<int> vertexOrder;
+      vector<float> points;
       
-      unsigned int numberOfPoints;       
+      unsigned int vao;
       
       void loadObjFile(const char *objFileName);
+      void initPoints();
       
       public:
       Model(const char *fileName);
       virtual ~Model(); 
         
-      float *getPoints();
-      unsigned int getNumberOfPoints();  
+      void prepare();
+      void render();  
 };
 
 #endif

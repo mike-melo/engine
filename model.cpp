@@ -3,6 +3,10 @@
 
 #include "model.hpp"
 
+#include "GL/glew.h"
+
+using namespace std;
+
 Model::Model(const char *objFileName) {            
   this->loadObjFile(objFileName);
 }
@@ -35,28 +39,37 @@ void Model::loadObjFile(const char *objFileName) {
   } 
  } while(fgets(line, 256, stream) != NULL);
 
- this->numberOfPoints = this->vertexOrder.size() * 3;
-
+ initPoints();
+ 
  fclose(stream);
 }
 
-unsigned int Model::getNumberOfPoints() {
-  return numberOfPoints;
+void Model::prepare() {
+  unsigned int vbo = 0;
+  glGenBuffers (1, &vbo);
+  glBindBuffer (GL_ARRAY_BUFFER, vbo);
+
+  glBufferData (GL_ARRAY_BUFFER, this->points.size() * sizeof (float), &this->points.front(), GL_STATIC_DRAW); 
+
+  glGenVertexArrays (1, &this->vao);
+  glBindVertexArray (this->vao);
+  glEnableVertexAttribArray (0);
+  glBindBuffer (GL_ARRAY_BUFFER, vbo);
+  glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 }
 
-float *Model::getPoints() {
-  float *points = new float[numberOfPoints];
-  unsigned int i = 0, j = 0;
+void Model::render() {
+  glBindVertexArray (this->vao);
+  glDrawArrays (GL_TRIANGLES, 0, this->points.size());     
+}
 
-  for(i=0; i<vertexOrder.size(); i++) {
+void Model::initPoints() {
+  for(unsigned int i=0; i<vertexOrder.size(); i++) {
     unsigned int vertexIndex = vertexOrder[i] - 1;
-  
-    points[j++] = vertices[vertexIndex].v[0];    
-    points[j++] = vertices[vertexIndex].v[1];    
-    points[j++] = vertices[vertexIndex].v[2];   
-  }
- 
-  return points;
+    this->points.push_back(vertices[vertexIndex].v[0]);
+    this->points.push_back(vertices[vertexIndex].v[1]);
+    this->points.push_back(vertices[vertexIndex].v[2]);
+  }      
 }
 
 Model::~Model() {

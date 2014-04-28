@@ -55,11 +55,6 @@ int main () {
   float cam_pos[] = {0.0f, 0.0f, 2.0f};
   Camera camera = Camera(1.0f, 10.0f, cam_pos, 0.0f);
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-  float points[] = {
-   0.0f,  0.5f,  0.0f,
-   0.5f, -0.5f,  0.0f,
-  -0.5f, -0.5f,  0.0f
-  };
   
   Scene scene = Scene();
   scene.add(model);
