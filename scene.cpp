@@ -3,9 +3,6 @@
 
 #include "scene.hpp"
 
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
-
 void Scene::add(Model &model) {
   this->models.push_back(model);  
 }

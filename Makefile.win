@@ -1,15 +1,15 @@
 # Project: engine
 # Makefile created by Dev-C++ 4.9.9.2
 
-CPP  = g++.exe -D__DEBUG__
-CC   = gcc.exe -D__DEBUG__
-WINDRES = windres.exe
+CPP  = mingw32-g++.exe -D__DEBUG__
+CC   = mingw32-gcc.exe -D__DEBUG__
+WINDRES = mingw32-windres.exe
 RES  = 
 OBJ  = main.o camera.o console.o scene.o model.o $(RES)
 LINKOBJ  = main.o camera.o console.o scene.o model.o $(RES)
-LIBS =  -L"C:/Dev-Cpp/lib" -mwindows lib/libopengl32.a lib/glfw3dll.a lib/libglew32.dll.a lib/libglu32.a  -g3 
-INCS =  -I"C:/Dev-Cpp/include" 
-CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
+LIBS =  -L"C:/MinGW/bin" -mwindows lib/libopengl32.a lib/glfw3dll.a lib/libglew32.dll.a lib/libglu32.a lib/libassimp.a lib/libzlib.a  -g3 
+INCS =  -I"C:/MinGW/include" 
+CXXINCS =  -I"C:/MinGW/include"  -I"C:/MinGW/lib/gcc/mingw32/4.8.1/include" 
 BIN  = engine.exe
 CXXFLAGS = $(CXXINCS)   -g3
 CFLAGS = $(INCS)   -g3

@@ -16,7 +16,7 @@ int main () {
     
   initConsole();
   
-  Model model = Model("ostrich.obj");
+  //Model model = Model("ostrich.obj");
   Model model2 = Model("man.obj");
   
   // start GL context and O/S window using the GLFW helper library
@@ -57,7 +57,7 @@ int main () {
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   
   Scene scene = Scene();
-  scene.add(model);
+  //scene.add(model);
   scene.add(model2);
   scene.prepare();
   camera.roll(width, height);  

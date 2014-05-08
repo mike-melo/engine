@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <cmath>
 
 #include "model.hpp"
+
+#include "assimp/Importer.hpp"      
+#include "assimp/scene.h"           
+#include "assimp/postprocess.h" 
 
 #include "GL/glew.h"
 
@@ -11,6 +16,37 @@ Model::Model(const char *objFileName) {
   this->loadObjFile(objFileName);
 }
 
+void Model::loadObjFile(const char *objFileName) {
+      Assimp::Importer importer;
+  // And have it read the given file with some example postprocessing
+  // Usually - if speed is not the most important aspect for you - you'll 
+  // propably to request more postprocessing than we do in this example.
+  const aiScene* scene = importer.ReadFile( objFileName, 
+        //aiProcess_CalcTangentSpace       | 
+        aiProcess_Triangulate                    //aiProcess_JoinIdenticalVertices  |
+        //aiProcess_SortByPType
+        );
+        
+  printf ("  %i animations\n", scene->mNumAnimations);
+  printf ("  %i cameras\n", scene->mNumCameras);
+  printf ("  %i lights\n", scene->mNumLights);
+  printf ("  %i materials\n", scene->mNumMaterials);
+  printf ("  %i meshes\n", scene->mNumMeshes);
+  printf ("  %i textures\n", scene->mNumTextures);
+  
+  const aiMesh* mesh = scene->mMeshes[0];
+  
+  if(mesh->HasPositions()) {
+   for(unsigned int i = 0; i<mesh->mNumVertices; i++) {
+     const aiVector3D* vp = &(mesh->mVertices[i]);
+     this->points.push_back(vp->x);
+     this->points.push_back(vp->y);
+     this->points.push_back(vp->z);              
+   }                          
+  }
+}
+
+/**
 void Model::loadObjFile(const char *objFileName) {
  FILE * stream = fopen(objFileName, "r");
  
@@ -29,13 +65,13 @@ void Model::loadObjFile(const char *objFileName) {
   }  
   
   if(line[0] == 'f' && line[1] == ' ') {
-   unsigned int v0 = 0, v1 = 0, v2 = 0;
+  int v0 = 0, v1 = 0, v2 = 0;
    //Have to check when there's only %d//%d"
    sscanf(line, "f %d/%*d/%*d %d/%*d/%*d %d/%*d/%*d", &v0, &v1, &v2);
    
-   this->vertexOrder.push_back(v0);
-   this->vertexOrder.push_back(v1);
-   this->vertexOrder.push_back(v2);
+   this->vertexOrder.push_back(abs(v0));
+   this->vertexOrder.push_back(abs(v1));
+   this->vertexOrder.push_back(abs(v2));
   } 
  } while(fgets(line, 256, stream) != NULL);
 
@@ -43,6 +79,7 @@ void Model::loadObjFile(const char *objFileName) {
  
  fclose(stream);
 }
+**/
 
 void Model::prepare() {
   unsigned int vbo = 0;
