@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <conio.h>
+#include <string>
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
@@ -16,8 +17,8 @@ int main () {
     
   initConsole();
   
-  //Model model = Model("ostrich.obj");
-  Model model2 = Model("man.obj");
+  Model model = Model("ostrich.obj");
+  //Model model2 = Model("tree.obj");
   
   // start GL context and O/S window using the GLFW helper library
   if (!glfwInit ()) {
@@ -57,8 +58,8 @@ int main () {
   glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
   
   Scene scene = Scene();
-  //scene.add(model);
-  scene.add(model2);
+  scene.add(model);
+  //scene.add(model2);
   scene.prepare();
   camera.roll(width, height);  
   
